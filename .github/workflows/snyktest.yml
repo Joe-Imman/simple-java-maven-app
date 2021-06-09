@@ -1,0 +1,40 @@
+name: snyk-test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: snyk-testing
+      public: false
+      plan:
+        - get: snyk-testing
+          trigger: true
+        - task: test-using-snyk
+          config:
+            platform: linux
+            image_resource:
+              type: registry-image
+              source: { repository: node, tag: "8" }
+            params:
+              SNYK_TOKEN: ((snyk-token))
+            inputs:
+              - name: snyk-testing
+            run:
+             path: /bin/sh
+             args:
+             - -c
+             - |
+              echo "Node Version: $(node --version)"
+              echo "NPM Version: $(npn -version)"
+              cd snyk-testing
+              npm install
+              npm install -g snyk
+              snyk test --all-projects
