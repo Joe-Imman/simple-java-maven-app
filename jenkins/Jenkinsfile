@@ -30,7 +30,8 @@ pipeline {
 	}
         stage ("Dynamic Analysis - DAST with OWASP ZAP") {
 		steps {
-			bat "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://localhost:8085/target/simple-java-maven-app"
+			bat "docker pull --privileged owasp/zap2docker-stable"
+			bat "docker run -t --privileged owasp/zap2docker-stable zap-baseline.py -t http://localhost:8085/target/simple-java-maven-app"
 		}
 	}
        
