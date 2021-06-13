@@ -21,12 +21,18 @@ pipeline {
                 }
             }
         }
-        stage ("Dynamic Analysis - DAST with OWASP ZAP") {
-			steps {
-				sh "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://URL TO ATTACK/ || true"
-			}
-		
+	    
+	stage ("Deploy - Tomcat") {
+		steps {
+			deploy adapters: [tomcat9(credentialsId: 'tomcat_creds', path: '', url: 'http://localhost:8085/')], contextPath: 'book-rest-api', war: '**/*.war'
 		}
+		
+	}
+        stage ("Dynamic Analysis - DAST with OWASP ZAP") {
+		steps {
+			sh "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://URL TO ATTACK/ || true"
+		}
+	}
        
     }
 }
