@@ -31,8 +31,6 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run a snyk scan using CLI
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
               echo run snyk scan using CLI...
               echo "Node Version: $(node --version)"
