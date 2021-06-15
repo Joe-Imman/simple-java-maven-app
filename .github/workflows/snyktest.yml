@@ -7,35 +7,25 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  Snyksecurity:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: /snyk-testing/
+    - uses: actions/checkout@master
+    - uses: snyk/actions/setup@master
+    - uses: actions/setup-go@v1
+    with:
+      go-version: "1.13"
     - name: snyk-testing
-      public: false
-      plan:
-        - get: snyk-testing
-          trigger: true
-        - task: test-using-snyk
-          config:
-            platform: linux
-            image_resource:
-              type: registry-image
-              source: { repository: node, tag: "8" }
-            params:
-              SNYK_TOKEN: ((snyk-token))
-            inputs:
-              - name: snyk-testing
-            run:
-             path: /bin/sh
-             args:
-             - -c
-             - |
-              echo "Node Version: $(node --version)"
-              echo "NPM Version: $(npn -version)"
-              cd snyk-testing
-              npm install
-              npm install -g snyk
-              snyk test --all-projects
+      run: snyk test --json-file-output=snyk.json
+      continue-on-error: true
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    -uses: garethr/snyk-to-sarif@master
+    -uses: actions/uplaod-artifact@v2
+      with:
+        name: SARIF
+        path: snyk.sarif
+    -name: Upload result to Github Code Scanning
+      uses: github/codeql-action/upload-sarif@v1
+    with:
+      sarif_file: snyk.sarif
