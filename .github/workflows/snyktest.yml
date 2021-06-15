@@ -22,9 +22,9 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     -uses: garethr/snyk-to-sarif@master
     -uses: actions/uplaod-artifact@v2
-      with:
-        name: SARIF
-        path: snyk.sarif
+     with:
+       name: SARIF
+       path: snyk.sarif
     -name: Upload result to Github Code Scanning
       uses: github/codeql-action/upload-sarif@v1
     with:
