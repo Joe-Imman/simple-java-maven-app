@@ -40,4 +40,4 @@ jobs:
               npm install
               npm install -g snyk
               snyk auth SNYK_TOKEN
-              snyk test --all-projects
+              snyk test --all-projects --json-file-output=vuln.json
