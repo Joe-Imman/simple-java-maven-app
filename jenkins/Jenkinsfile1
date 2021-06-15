@@ -1,0 +1,33 @@
+pipeline {
+    agent {
+        node {
+            label 'master'
+            
+        }
+    }
+    stages {
+        stage('Build') {
+            steps {
+                bat 'mvn -B -DskipTests clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                bat 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+	    
+	
+        stage ("Dynamic Analysis - DAST with OWASP ZAP") {
+		steps {
+			bat "docker run -t --privileged owasp/zap2docker-stable zap-baseline.py -t https://demo.testfire.net/"
+		}
+	}
+       
+    }
+}
