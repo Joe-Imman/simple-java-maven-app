@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/maven@master
+      uses: snyk/actions/maven@master
       with:
         go-version: "1.13"
     - name: snyk-testing
