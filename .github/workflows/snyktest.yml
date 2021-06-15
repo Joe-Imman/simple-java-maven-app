@@ -29,9 +29,7 @@ jobs:
       
     - name: runsnykscan
       run: |
-        echo run snyk scan using CLI...
-        echo "Node Version: $(node --version)"
-        echo "NPM version: $(npm --version)"
+        echo running snyk scan using CLI...
         brew tap snyk/tap
         brew install snyk
         snyk auth SNYK_TOKEN
