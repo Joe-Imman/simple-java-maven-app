@@ -33,12 +33,7 @@ jobs:
       - name: Run a snyk scan using CLI
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run:
-          path: /bin/sh
-          args:
-            - -c
-            - |
-              cd /bin/sh
+        run: |
               echo run snyk scan using CLI...
               echo "Node Version: $(node --version)"
               echo "NPM version: $(npm --version)"
