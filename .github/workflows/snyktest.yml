@@ -10,8 +10,9 @@ jobs:
   Snyksecurity:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - uses: snyk/actions/setup@master
+    - uses: simple-java-maven-app/checkout@master
+    - name: Run Snyk to check for vulnerabilities
+    - uses: Joe-Imman/simple-java-maven-app/.github/workflows/snyktest@master
     - uses: actions/setup-go@v1
       with:
         go-version: "1.13"
